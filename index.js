@@ -120,8 +120,7 @@ function tankMovement(){
 }
 
 function physicsWrapper(){
-    let yInit=-25
-    let xInit=25
+    let vi=25
     let v={x:0,y:0}
     let angle=cannon.angle
     let reset=true
@@ -129,15 +128,11 @@ function physicsWrapper(){
         if(reset){
         reset=false
         angle=cannon.angle
-        v.x=xInit
-        v.y=yInit
-        v.y=yInit*Math.sin(angle)
-        v.x=xInit*Math.cos(angle)
-        ball.x=ball.xStart
-        ball.y=ball.yStart
+        v.y=-vi*Math.sin(angle)
+        v.x=vi*Math.cos(angle)
         }
         ball.x+=v.x
-        v.y+=(1)
+        v.y+=1
         ball.y+=v.y
         if(ball.y>floor){
             ball.fired=false;
