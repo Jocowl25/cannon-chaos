@@ -28,17 +28,14 @@ canvas.addEventListener("mouseup",()=>{
 canvas.addEventListener("mousemove",(e)=>{
 if (tankDragged){
     tank.x=e.offsetX-tank.w/2;
-}
-if(mouseDown){
+}else if(mouseDown){
     cannon.angle=Math.atan2(tank.y-tank.h/2 - e.offsetY, (-(tank.x+tank.w/2 - e.offsetX)))
-    console.log(cannon.angle)
-    if(cannon.angle>Math.PI-0.1){
+    if(cannon.angle>=Math.PI||(cannon.angle<0.1&&cannon.angle<-1)){
         cannon.angle=Math.PI-0.1
-}
-    if(cannon.angle<0){
-        cannon.angle=0
+        }
+    if(cannon.angle<0.1&&cannon.angle>-1){
+    cannon.angle=0.1
     }
-    console.log(cannon.angle)
 }
 })
 document.addEventListener("keydown",(key)=>{
