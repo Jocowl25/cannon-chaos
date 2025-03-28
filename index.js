@@ -157,8 +157,8 @@ function drawTank(){
     //ball
     ctx.beginPath();
     ctx.fillStyle="black"
-    ball.xStart=tank.x+tank.w/2+(cannon.w-12)*Math.cos(cannon.angle)
-    ball.yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-12)*Math.sin(-cannon.angle)
+    ball.xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(cannon.angle)
+    ball.yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-cannon.angle)
     if(ball.fired){
         physics()
     }else{
