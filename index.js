@@ -47,10 +47,10 @@ document.addEventListener("keydown",(key)=>{
             dir.right=true
         }
     }
-        if(key.key=="w"){
+        if(key.key=="w"||key.key=="ArrowUp"){
             dir.up=true
         }
-        if(key.key=="s"){
+        if(key.key=="s"||key.key=="ArrowDown"){
             dir.down=true;
         }
         if(key.key==" "){
@@ -94,7 +94,7 @@ function setStatic(){
     ctx.fillStyle="#82fff7"
     ctx.fillRect(0,0,width,height)
     //floor
-    ctx.fillStyle="brown"
+    ctx.fillStyle="green"
     ctx.fillRect(0,floor,width,height)
     }
     
@@ -120,12 +120,28 @@ function tankMovement(){
 }
 
 function physicsWrapper(){
-    let time=0
-    function physicsInternal(){
-        time++
-        if(time>100){
+    let yInit=-25
+    let xInit=25
+    let v={x:0,y:0}
+    let angle=cannon.angle
+    let reset=true
+    physicsInternal= function(){
+        if(reset){
+        reset=false
+        angle=cannon.angle
+        v.x=xInit
+        v.y=yInit
+        v.y=yInit*Math.sin(angle)
+        v.x=xInit*Math.cos(angle)
+        ball.x=ball.xStart
+        ball.y=ball.yStart
+        }
+        ball.x+=v.x
+        v.y+=(1)
+        ball.y+=v.y
+        if(ball.y>floor){
             ball.fired=false;
-            time=0
+            reset=true
         }
     }
 return physicsInternal
@@ -167,7 +183,7 @@ function drawTank(){
     ctx.arc(tank.x+50,tank.y+50,10,0,2*Math.PI)
     ctx.fill()
     //rect on front
-    ctx.fillStyle="brown"
+    ctx.fillStyle="green"
     ctx.lineWidth=4
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+15,50,10,[40])
