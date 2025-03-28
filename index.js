@@ -9,7 +9,7 @@ let floor=height-25;
 let mouseDown=false;
 let tank={w:60,h:50,x:0,y:floor-53}
 let cannon={w:100,h:30,angle:Math.PI/4}
-let ball={x:0,y:0,xStart:0,yStart:0}
+let ball={x:0,y:0,xStart:0,yStart:0,fired:false}
 let dir={left:false,right:false,up:false,down:false}
 
 canvas.addEventListener("mousedown",(e)=>{
@@ -52,6 +52,9 @@ document.addEventListener("keydown",(key)=>{
         }
         if(key.key=="s"){
             dir.down=true;
+        }
+        if(key.key==" "){
+            ball.fired=true
         }
 })
 
@@ -116,6 +119,19 @@ function tankMovement(){
     }
 }
 
+function physicsWrapper(){
+    let time=0
+    function physicsInternal(){
+        time++
+        if(time>100){
+            ball.fired=false;
+            time=0
+        }
+    }
+return physicsInternal
+}
+let physics=physicsWrapper()
+
 function drawTank(){
     //body
     ctx.fillStyle="grey"
@@ -127,7 +143,13 @@ function drawTank(){
     ctx.fillStyle="black"
     ball.xStart=tank.x+tank.w/2+(cannon.w-12)*Math.cos(cannon.angle)
     ball.yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-12)*Math.sin(-cannon.angle)
-    ctx.arc(ball.xStart,ball.yStart,10,0,2*Math.PI)
+    if(ball.fired){
+        physics()
+    }else{
+        ball.x=ball.xStart
+        ball.y=ball.yStart
+    }
+    ctx.arc(ball.x,ball.y,10,0,2*Math.PI)
     ctx.fill()
     //cannon
     ctx.fillStyle="grey"
