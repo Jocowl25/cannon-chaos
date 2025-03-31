@@ -101,6 +101,11 @@ function setStatic(){
     //floor
     ctx.fillStyle="green"
     ctx.fillRect(0,floor,width,height)
+    ctx.beginPath()
+    ctx.moveTo(0,floor,0,0)
+    ctx.lineTo(width,floor,width,height)
+    ctx.closePath()
+    ctx.stroke()
     }
     
 function tankMovement(){
@@ -168,14 +173,10 @@ function drawBall(ball,i){
     }
     ctx.arc(ball.x,ball.y,10,0,2*Math.PI)
     ctx.fill()
+    ctx.stroke()
 }
 
 function drawTank(){
-    //body
-    ctx.fillStyle="grey"
-    ctx.beginPath();
-    ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
-    ctx.fill()
     //cannon
     ctx.fillStyle="grey"
     ctx.translate(tank.x+tank.w/2,tank.y+tank.h/2-tank.h/4+4)
@@ -183,8 +184,15 @@ function drawTank(){
     ctx.beginPath();
     ctx.roundRect(-cannon.w/4+cannon.w/8, -cannon.h/2, cannon.w, cannon.h,[5])
     ctx.fill()
+    ctx.stroke()
     ctx.translate(-tank.x+tank.w/2, -tank.y+tank.h/2-tank.h/4+4)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    //body
+    ctx.fillStyle="grey"
+    ctx.beginPath();
+    ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
+    ctx.fill()
+    ctx.stroke()
     //wheels
     ctx.beginPath();
     ctx.fillStyle="black"
@@ -193,13 +201,9 @@ function drawTank(){
     ctx.fill()
     //rect on front
     ctx.fillStyle="green"
-    ctx.lineWidth=4
+    ctx.lineWidth=2
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+15,50,10,[40])
-    //line on front
     ctx.fill()
-    ctx.beginPath()
-    ctx.moveTo(tank.x+10,tank.y+20)
-    ctx.lineTo(tank.x+50,tank.y+20)
     ctx.stroke()
 }
