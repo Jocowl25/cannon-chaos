@@ -8,7 +8,7 @@ let tankDragged=false;
 let floor=height-25;
 let mouseDown=false;
 let tank={w:60,h:50,x:0,y:floor-53}
-let cannon={w:100,h:30,angle:Math.PI/4}
+let cannon={w:100,h:30,angle:Math.PI/4,fire:false}
 let ballList=[]
 let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
@@ -54,9 +54,7 @@ document.addEventListener("keydown",(key)=>{
             dir.down=true;
         }
         if(key.key==" "){
-            ballList.push(new ball(colorIndex))
-            colorIndex++
-            colorIndex=colorIndex%5
+            cannon.fire=true;
         }
 })
 
@@ -72,6 +70,9 @@ document.addEventListener("keyup",(key)=>{
     }
     if(key.key=="s"||key.key=="ArrowDown"){
         dir.down=false;
+    }
+    if(key.key==" "){
+        cannon.fire=false;
     }
  })
 
@@ -119,6 +120,11 @@ function tankMovement(){
     }
     if(dir.down&&cannon.angle>0.1){
         cannon.angle-=0.1
+    }
+    if(cannon.fire&&Math.round(Date.now())%200<25){
+        ballList.push(new ball(colorIndex))
+        colorIndex++
+        colorIndex=colorIndex%5
     }
 }
 class ball {
