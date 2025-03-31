@@ -141,9 +141,6 @@ function physicsWrapper(){
             ball.y=floor-1
             v.y=(-vi*Math.sin(angle))/Math.sqrt(bounce)
             v.x=(vi-(10*Math.sqrt(bounce)))*Math.cos(angle)
-            if(v.x<0){
-                v.x=0
-            }
         }
         if((vi/bounce<5)||ball.x<0||ball.x>width){
             ball.fired=false;
