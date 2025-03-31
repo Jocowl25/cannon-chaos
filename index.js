@@ -12,6 +12,7 @@ let cannon={w:100,h:30,angle:Math.PI/4,fire:false}
 let ballList=[]
 let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
+let prevTime=Date.now()
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -121,7 +122,8 @@ function tankMovement(){
     if(dir.down&&cannon.angle>0.1){
         cannon.angle-=0.1
     }
-    if(cannon.fire&&Math.round(Date.now())%200<25){
+    if(cannon.fire&&Date.now()-prevTime>200){
+        prevTime=Date.now()
         ballList.push(new ball(colorIndex))
         colorIndex++
         colorIndex=colorIndex%5
