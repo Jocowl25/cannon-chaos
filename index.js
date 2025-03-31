@@ -96,10 +96,10 @@ function draw(){
 }
 function setStatic(){
     //sky
-    ctx.fillStyle="#c3faf3"
+    ctx.fillStyle="#130d36"
     ctx.fillRect(0,0,width,height)
     //floor
-    ctx.fillStyle="green"
+    ctx.fillStyle="#11360d"
     ctx.fillRect(0,floor,width,height)
     ctx.beginPath()
     ctx.moveTo(0,floor,0,0)
