@@ -84,6 +84,7 @@ requestAnimationFrame(draw)
 
 function draw(){
     setStatic()
+    ballList.forEach((ball,i)=>drawBall(ball,i))
     tankMovement()
     drawTank()
     requestAnimationFrame(draw)
@@ -119,23 +120,23 @@ function tankMovement(){
 }
 class ball {
         angle=cannon.angle
-        xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(cannon.angle)
-        yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-cannon.angle)
+        xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(this.angle)
+        yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-this.angle)
         x=this.xStart
         y=this.yStart
         vi=25
         bounce=0
-        v={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
+        vel={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
         finish=false
     physics(){
-        this.x+=this.v.x
-        this.v.y+=1
-        this.y+=this.v.y
+        this.x+=this.vel.x
+        this.vel.y+=1
+        this.y+=this.vel.y
         if(this.y>floor){
             this.bounce++
             this.y=floor-1
-            this.v.y=(-this.vi*Math.sin(this.angle))/Math.sqrt(this.bounce)
-            this.v.x=(this.vi-(10*Math.sqrt(this.bounce)))*Math.cos(this.angle)
+            this.vel.y=(-this.vi*Math.sin(this.angle))/Math.sqrt(this.bounce)
+            this.vel.x=(this.vi-(10*Math.sqrt(this.bounce)))*Math.cos(this.angle)
         }
         if((this.vi/this.bounce<5)||this.x<0||this.x>width){
             this.finish=true
@@ -156,10 +157,6 @@ function drawBall(ball,i){
 }
 
 function drawTank(){
-    //ball
-    ballList.forEach((ball,i)=>{
-      drawBall(ball,i)
-    })
     //body
     ctx.fillStyle="grey"
     ctx.beginPath();
