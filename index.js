@@ -9,9 +9,8 @@ let floor=height-25;
 let mouseDown=false;
 let tank={w:60,h:50,x:0,y:floor-53}
 let cannon={w:100,h:30,angle:Math.PI/4}
-let ball={x:0,y:0,xStart:0,yStart:0,fired:false}
+let ballList=[]
 let dir={left:false,right:false,up:false,down:false}
-
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -54,7 +53,7 @@ document.addEventListener("keydown",(key)=>{
             dir.down=true;
         }
         if(key.key==" "){
-            ball.fired=true
+            ballList.push(new ball())
         }
 })
 
@@ -118,54 +117,49 @@ function tankMovement(){
         cannon.angle-=0.1
     }
 }
-
-function physicsWrapper(){
-    let vi=25
-    let v={x:0,y:0}
-    let angle=cannon.angle
-    let reset=true
-    let bounce=0;
-    physicsInternal= function(){
-        if(reset){
-        reset=false
+class ball {
         angle=cannon.angle
-        v.y=-vi*Math.sin(angle)
-        v.x=vi*Math.cos(angle)
+        xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(cannon.angle)
+        yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-cannon.angle)
+        x=this.xStart
+        y=this.yStart
+        vi=25
         bounce=0
+        v={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
+        finish=false
+    physics(){
+        this.x+=this.v.x
+        this.v.y+=1
+        this.y+=this.v.y
+        if(this.y>floor){
+            this.bounce++
+            this.y=floor-1
+            this.v.y=(-this.vi*Math.sin(this.angle))/Math.sqrt(this.bounce)
+            this.v.x=(this.vi-(10*Math.sqrt(this.bounce)))*Math.cos(this.angle)
         }
-        ball.x+=v.x
-        v.y+=1
-        ball.y+=v.y
-        if(ball.y>floor){
-            bounce++
-            ball.y=floor-1
-            v.y=(-vi*Math.sin(angle))/Math.sqrt(bounce)
-            v.x=(vi-(10*Math.sqrt(bounce)))*Math.cos(angle)
-        }
-        if((vi/bounce<5)||ball.x<0||ball.x>width){
-            ball.fired=false;
-            reset=true
+        if((this.vi/this.bounce<5)||this.x<0||this.x>width){
+            this.finish=true
         }
     }
-return physicsInternal
-}
-let physics=physicsWrapper()
+  }
 
-function drawTank(){
-
-    //ball
+function drawBall(ball,i){
     ctx.beginPath();
     ctx.fillStyle="black"
-    ball.xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(cannon.angle)
-    ball.yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-cannon.angle)
-    if(ball.fired){
-        physics()
+    if(!ball.finish){
+        ball.physics()
     }else{
-        ball.x=ball.xStart
-        ball.y=ball.yStart
+        ballList.splice(i,1)
     }
     ctx.arc(ball.x,ball.y,10,0,2*Math.PI)
     ctx.fill()
+}
+
+function drawTank(){
+    //ball
+    ballList.forEach((ball,i)=>{
+      drawBall(ball,i)
+    })
     //body
     ctx.fillStyle="grey"
     ctx.beginPath();
