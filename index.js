@@ -155,11 +155,7 @@ return physicsInternal
 let physics=physicsWrapper()
 
 function drawTank(){
-    //body
-    ctx.fillStyle="grey"
-    ctx.beginPath();
-    ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
-    ctx.fill()
+
     //ball
     ctx.beginPath();
     ctx.fillStyle="black"
@@ -172,6 +168,11 @@ function drawTank(){
         ball.y=ball.yStart
     }
     ctx.arc(ball.x,ball.y,10,0,2*Math.PI)
+    ctx.fill()
+    //body
+    ctx.fillStyle="grey"
+    ctx.beginPath();
+    ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
     //cannon
     ctx.fillStyle="grey"
