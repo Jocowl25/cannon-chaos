@@ -11,6 +11,7 @@ let tank={w:60,h:50,x:0,y:floor-53}
 let cannon={w:100,h:30,angle:Math.PI/4}
 let ballList=[]
 let dir={left:false,right:false,up:false,down:false}
+let colorIndex=0
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -53,7 +54,9 @@ document.addEventListener("keydown",(key)=>{
             dir.down=true;
         }
         if(key.key==" "){
-            ballList.push(new ball())
+            ballList.push(new ball(colorIndex))
+            colorIndex++
+            colorIndex=colorIndex%5
         }
 })
 
@@ -119,7 +122,9 @@ function tankMovement(){
     }
 }
 class ball {
-        color=60*Math.floor(Math.random()*5)
+        constructor(i){
+            this.color=60*i
+        }
         angle=cannon.angle
         xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(this.angle)
         yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-this.angle)
@@ -147,7 +152,7 @@ class ball {
 
 function drawBall(ball,i){
     ctx.beginPath();
-    ctx.fillStyle=`oklch(50 100 ${ball.color}deg)`
+    ctx.fillStyle=`oklch(100% 0.9 ${ball.color}deg)`
     if(!ball.finish){
         ball.physics()
     }else{
