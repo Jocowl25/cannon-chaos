@@ -143,13 +143,13 @@ class ball {
         yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-this.angle)
         x=this.xStart
         y=this.yStart
-        vi=25
+        vi=25 //INITIAL VELOCITY
         bounce=0
         vel={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
         finish=false
     physics(){
         this.x+=this.vel.x
-        this.vel.y+=1
+        this.vel.y+=this.vi/height*20 //GRAVITY
         this.y+=this.vel.y
         if(this.y>floor){
             this.bounce++
