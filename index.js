@@ -91,7 +91,7 @@ function draw(){
 }
 function setStatic(){
     //sky
-    ctx.fillStyle="#82fff7"
+    ctx.fillStyle="#c3faf3"
     ctx.fillRect(0,0,width,height)
     //floor
     ctx.fillStyle="green"
@@ -119,6 +119,7 @@ function tankMovement(){
     }
 }
 class ball {
+        color=60*Math.floor(Math.random()*5)
         angle=cannon.angle
         xStart=tank.x+tank.w/2+(cannon.w-25)*Math.cos(this.angle)
         yStart=tank.y+tank.h/2-tank.h/4+4+(cannon.w-25)*Math.sin(-this.angle)
@@ -146,7 +147,7 @@ class ball {
 
 function drawBall(ball,i){
     ctx.beginPath();
-    ctx.fillStyle="black"
+    ctx.fillStyle=`oklch(50 100 ${ball.color}deg)`
     if(!ball.finish){
         ball.physics()
     }else{
