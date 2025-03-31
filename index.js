@@ -138,6 +138,7 @@ function physicsWrapper(){
         ball.y+=v.y
         if(ball.y>floor){
             bounce++
+            ball.y=floor-1
             v.y=(-vi*Math.sin(angle))/bounce
         }
         if((vi/bounce<5)||ball.x<0||ball.x>width){
