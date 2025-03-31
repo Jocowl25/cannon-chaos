@@ -140,7 +140,7 @@ function physicsWrapper(){
             bounce++
             v.y=(-vi*Math.sin(angle))/bounce
         }
-        if(vi/bounce<5){
+        if((vi/bounce<5)||ball.x<0||ball.x>width){
             ball.fired=false;
             reset=true
         }
