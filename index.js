@@ -40,7 +40,7 @@ if (tankDragged){
 }
 })
 document.addEventListener("keydown",(key)=>{
-    if(!mouseDown){
+    if(!tankDragged){
         if(key.key=="a"||key.key=="ArrowLeft"){
             dir.left=true
         }
@@ -178,7 +178,7 @@ function drawBall(ball,i){
 
 function drawTank(){
     //cannon
-    ctx.fillStyle="grey"
+    ctx.fillStyle="#b8b8b8"
     ctx.translate(tank.x+tank.w/2,tank.y+tank.h/2-tank.h/4+4)
     ctx.rotate(-cannon.angle);
     ctx.beginPath();
@@ -188,7 +188,7 @@ function drawTank(){
     ctx.translate(-tank.x+tank.w/2, -tank.y+tank.h/2-tank.h/4+4)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     //body
-    ctx.fillStyle="grey"
+    ctx.fillStyle="#b8b8b8"
     ctx.beginPath();
     ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
@@ -200,7 +200,7 @@ function drawTank(){
     ctx.arc(tank.x+50,tank.y+50,10,0,2*Math.PI)
     ctx.fill()
     //rect on front
-    ctx.fillStyle="green"
+    ctx.fillStyle=`oklch(100% 0.9 ${60*colorIndex}deg)`
     ctx.lineWidth=2
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+15,50,10,[40])
