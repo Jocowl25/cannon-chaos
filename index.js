@@ -124,17 +124,23 @@ function physicsWrapper(){
     let v={x:0,y:0}
     let angle=cannon.angle
     let reset=true
+    let bounce=0;
     physicsInternal= function(){
         if(reset){
         reset=false
         angle=cannon.angle
         v.y=-vi*Math.sin(angle)
         v.x=vi*Math.cos(angle)
+        bounce=0
         }
         ball.x+=v.x
         v.y+=1
         ball.y+=v.y
         if(ball.y>floor){
+            bounce++
+            v.y=(-vi*Math.sin(angle))/bounce
+        }
+        if(vi/bounce<5){
             ball.fired=false;
             reset=true
         }
