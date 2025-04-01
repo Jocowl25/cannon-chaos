@@ -92,6 +92,7 @@ function draw(){
     ballList.forEach((ball,i)=>drawBall(ball,i))
     tankMovement()
     drawTank()
+    drawEnemy()
     requestAnimationFrame(draw)
 }
 function setStatic(){
@@ -207,6 +208,19 @@ function drawTank(){
     ctx.lineWidth=2
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+15,50,10,[40])
+    ctx.fill()
+    ctx.stroke()
+}
+
+function drawEnemy(){    
+    ctx.fillStyle="cyan"
+    ctx.beginPath();
+    ctx.roundRect(0,floor-50,50,50,[10])
+    ballList.forEach((ball)=>{
+        if(ctx.isPointInPath(ball.x,ball.y)){
+            ctx.fillStyle="red"
+        }
+    })
     ctx.fill()
     ctx.stroke()
 }
