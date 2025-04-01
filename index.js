@@ -156,8 +156,11 @@ class ball {
             this.y=floor-1
             this.vel.y=(-this.vi*Math.sin(this.angle))/Math.sqrt(this.bounce)
             this.vel.x=(this.vi-(10*Math.sqrt(this.bounce)))*Math.cos(this.angle)
+            if(this.vi-(10*Math.sqrt(this.bounce))<0){
+                this.vel.x=0
+            }
         }
-        if((this.vi/this.bounce<5)||this.x<0||this.x>width){
+        if(((this.vi/this.bounce<2)&&this.y==floor-1)||this.x<0||this.x>width){
             this.finish=true
         }
     }
