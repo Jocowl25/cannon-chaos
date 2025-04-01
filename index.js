@@ -184,7 +184,7 @@ class ball {
         this.x+=this.vel.x
         this.vel.y+=this.vi/height*20 //GRAVITY
         this.y+=this.vel.y
-        if(this.x<0||this.x>width-this.size){
+        if(this.x<0+this.size||this.x>width-this.size){
             this.vel.x=this.vel.x*-1
         }
         if(this.y>floor-this.size){
