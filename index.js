@@ -14,6 +14,7 @@ let enemyList=[]
 let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
 let prevTime=Date.now()
+let score=0;
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -97,6 +98,9 @@ function draw(){
     tankMovement()
     drawTank()
     enemyList.forEach((enemy,i)=>drawEnemy(enemy,i))
+    ctx.font = "48px serif";
+    let string=score
+    ctx.fillText(score, width/2-(ctx.measureText(string).width/2), 50);
     requestAnimationFrame(draw)
 }
 function setStatic(){
@@ -256,6 +260,7 @@ function drawEnemy(enemy,i){
     ballList.forEach((ball)=>{
         if(ctx.isPointInPath(ball.x,ball.y)){
             enemyList.splice(i,1)
+            score++
         }
     })
     ctx.fill()
