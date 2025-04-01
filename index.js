@@ -7,9 +7,10 @@ let height=canvas.height;
 let tankDragged=false;
 let floor=height-25;
 let mouseDown=false;
-let tank={w:60,h:50,x:0,y:floor-53}
+let tank={w:60,h:50,x:width/2,y:floor-53}
 let cannon={w:100,h:30,angle:Math.PI/4,fire:false}
 let ballList=[]
+let enemyList=[]
 let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
 let prevTime=Date.now()
@@ -89,10 +90,13 @@ requestAnimationFrame(draw)
 
 function draw(){
     setStatic()
+    if(enemyList.length<10){
+    enemyList.push(new enemy)
+    }
     ballList.forEach((ball,i)=>drawBall(ball,i))
     tankMovement()
     drawTank()
-    drawEnemy()
+    enemyList.forEach((enemy,i)=>drawEnemy(enemy,i))
     requestAnimationFrame(draw)
 }
 function setStatic(){
@@ -157,15 +161,47 @@ class ball {
             this.y=floor-1
             this.vel.y=(-this.vi*Math.sin(this.angle))/Math.sqrt(this.bounce)
             this.vel.x=(this.vi-(10*Math.sqrt(this.bounce)))*Math.cos(this.angle)
-            if(this.vi-(10*Math.sqrt(this.bounce))<0){
-                this.vel.x=0
-            }
         }
         if(((this.vi/this.bounce<2)&&this.y==floor-1)||this.x<0||this.x>width){
             this.finish=true
         }
     }
   }
+
+  class enemy{
+    size=50
+    xStart=Math.floor(Math.random() * ((width-50) - (50) + 1) + (50));
+    yStart=0
+    angle=-Math.PI/4
+    bounce=0
+    x=this.xStart
+    y=this.yStart
+    vi=5 //INITIAL VELOCITY
+    bounce=1
+    vel={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
+    finish=false
+    physics(i){
+        this.x+=this.vel.x
+        this.vel.y+=this.vi/height*20 //GRAVITY
+        this.y+=this.vel.y
+        if(this.x<0||this.x>width-this.size){
+            this.vel.x=this.vel.x*-1
+        }
+        if(this.y>floor-this.size){
+            if(Math.random()<0.5){
+                this.angle=-2.35619
+            }else{
+                this.angle=-Math.PI/4
+            }
+            this.y=floor-this.size
+            this.vel.y=(-this.vi*Math.sin(-this.angle))*3
+            this.vel.x=(this.vi)*Math.cos(-this.angle)
+        }
+        if(((this.vi/this.bounce<2)&&this.y==floor-this.size)){
+            enemyList.splice(i,1)
+        }
+  }
+}
 
 function drawBall(ball,i){
     ctx.beginPath();
@@ -212,13 +248,14 @@ function drawTank(){
     ctx.stroke()
 }
 
-function drawEnemy(){    
-    ctx.fillStyle="cyan"
+function drawEnemy(enemy,i){    
+    ctx.fillStyle="white"
     ctx.beginPath();
-    ctx.roundRect(0,floor-50,50,50,[10])
+    ctx.arc(enemy.x,enemy.y,enemy.size,0,2*Math.PI)
+    enemy.physics(i)
     ballList.forEach((ball)=>{
         if(ctx.isPointInPath(ball.x,ball.y)){
-            ctx.fillStyle="red"
+            enemyList.splice(i,1)
         }
     })
     ctx.fill()
