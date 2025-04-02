@@ -15,6 +15,7 @@ let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
 let prevTime=Date.now()
 let score=0;
+let bigcount=0
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -91,8 +92,15 @@ requestAnimationFrame(draw)
 
 function draw(){
     setStatic()
-    if(enemyList.length<10){
-    enemyList.push(new enemy)
+    if(bigcount<10){
+        let angle
+        if(Math.random()<0.5){
+            angle=-Math.PI/4
+    }else{
+        angle=-2.35619
+    }
+        enemyList.push(new enemy(50,angle,Math.floor(Math.random() * ((width-50) - (50) + 1) + (50)),0))
+        bigcount++
     }
     ballList.forEach((ball,i)=>drawBall(ball,i))
     tankMovement()
@@ -176,16 +184,17 @@ class ball {
   }
 
   class enemy{
-    size=50
-    xStart=Math.floor(Math.random() * ((width-50) - (50) + 1) + (50));
-    yStart=0
-    angle=-Math.PI/4
-    bounce=0
-    x=this.xStart
-    y=this.yStart
-    vi=5 //INITIAL VELOCITY
+    constructor(size,angle,xStart,yStart){
+        this.size=size
+        this.angle=angle
+        this.vi=5 //INITIAL VELOCITY
+        this.vel={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
+        this.xStart=xStart
+        this.yStart=yStart
+        this.x=this.xStart
+         this.y=this.yStart
+    }
     bounce=1
-    vel={x:(this.vi)*Math.cos(this.angle),y:(-this.vi*Math.sin(this.angle))}
     finish=false
     physics(i){
         this.x+=this.vel.x
@@ -203,9 +212,6 @@ class ball {
             this.y=floor-this.size
             this.vel.y=(-this.vi*Math.sin(-this.angle))*3
             this.vel.x=(this.vi)*Math.cos(-this.angle)
-        }
-        if(((this.vi/this.bounce<2)&&this.y==floor-this.size)){
-            enemyList.splice(i,1)
         }
   }
 }
@@ -255,15 +261,21 @@ function drawTank(){
     ctx.stroke()
 }
 
-function drawEnemy(enemy,i){    
+function drawEnemy(enem,i){    
     ctx.fillStyle="white"
     ctx.beginPath();
-    ctx.arc(enemy.x,enemy.y,enemy.size,0,2*Math.PI)
-    enemy.physics(i)
+    ctx.arc(enem.x,enem.y,enem.size,0,2*Math.PI)
+    enem.physics(i)
     ballList.forEach((ball)=>{
         if(ctx.isPointInPath(ball.x,ball.y)){
             enemyList.splice(i,1)
             score++
+            if(enem.size>25){
+                bigcount--
+                enemyList.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
+                enemyList.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
+                return;
+            }
         }
     })
     ctx.fill()
