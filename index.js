@@ -257,6 +257,7 @@ enemyList.forEach((enemy)=>{
     if(inPath){
         score=0
        enemyList=[]
+        ballList=[]
        bigcount=0
         tank.x=width/2
         return;
