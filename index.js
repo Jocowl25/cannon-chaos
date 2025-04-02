@@ -7,7 +7,7 @@ let height=canvas.height;
 let tankDragged=false;
 let floor=height-25;
 let mouseDown=false;
-let tank={w:60,h:50,x:width/2,y:floor-53}
+let tank={w:60,h:70,x:width/2,y:floor-73}
 let cannon={w:100,h:30,angle:Math.PI/4,fire:false}
 let ballList=[]
 let enemyList=[]
@@ -92,16 +92,7 @@ requestAnimationFrame(draw)
 
 function draw(){
     setStatic()
-    if(bigcount<10){
-        let angle
-        if(Math.random()<0.5){
-            angle=-Math.PI/4
-    }else{
-        angle=-2.35619
-    }
-        enemyList.push(new enemy(50,angle,Math.floor(Math.random() * ((width-50) - (50) + 1) + (50)),0))
-        bigcount++
-    }
+    enemySpawn()
     ballList.forEach((ball,i)=>drawBall(ball,i))
     tankMovement()
     drawTank()
@@ -125,6 +116,18 @@ function setStatic(){
     ctx.stroke()
     }
     
+    function enemySpawn(){
+        if(bigcount<10){
+            let angle
+            if(Math.random()<0.5){
+                angle=-Math.PI/4
+        }else{
+            angle=-2.35619
+        }
+            enemyList.push(new enemy(50,angle,Math.floor(Math.random() * ((width-50) - (50) + 1) + (50)),0))
+            bigcount++
+        }
+    }
 function tankMovement(){
     if(dir.right){
         tank.x+=10
@@ -241,22 +244,36 @@ function drawTank(){
     ctx.translate(-tank.x+tank.w/2, -tank.y+tank.h/2-tank.h/4+4)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     //body
+    let pathTank=new Path2D()
     ctx.fillStyle="#b8b8b8"
     ctx.beginPath();
     ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
+    pathTank.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
     ctx.stroke()
+
+enemyList.forEach((enemy)=>{
+    let inPath=ctx.isPointInPath(pathTank,enemy.x,enemy.y)
+    if(inPath){
+        score=0
+       enemyList=[]
+       bigcount=0
+        tank.x=width/2
+        return;
+    }
+})
+
     //wheels
     ctx.beginPath();
     ctx.fillStyle="black"
-    ctx.arc(tank.x+10,tank.y+50,10,0,2*Math.PI)
-    ctx.arc(tank.x+50,tank.y+50,10,0,2*Math.PI)
+    ctx.arc(tank.x+10,tank.y+70,10,0,2*Math.PI)
+    ctx.arc(tank.x+50,tank.y+70,10,0,2*Math.PI)
     ctx.fill()
     //rect on front
     ctx.fillStyle=`oklch(100% 0.9 ${60*colorIndex}deg)`
     ctx.lineWidth=2
     ctx.beginPath();
-    ctx.roundRect(tank.x+5,tank.y+15,50,10,[40])
+    ctx.roundRect(tank.x+5,tank.y+25,50,10,[40])
     ctx.fill()
     ctx.stroke()
 }
