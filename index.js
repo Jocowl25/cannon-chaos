@@ -80,7 +80,7 @@ requestAnimationFrame(draw)
 function draw(){
     setStatic()
     enemySpawn()
-    balls.collection.forEach((bal,i)=>drawBall(bal,i))
+    balls.collection.forEach((ball,i)=>drawBall(ball,i))
     tankMovement()
     drawTank()
     enemies.collection.forEach((enemy,i)=>drawEnemy(enemy,i))
