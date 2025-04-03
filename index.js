@@ -4,12 +4,10 @@ canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 let width=canvas.width;
 let height=canvas.height;
-let tankDragged=false;
 let floor=height-25;
-let mouseDown=false;
-let tank={w:60,h:70,x:width/2,y:floor-73}
+let tank={w:60,h:70,x:width/2,y:floor-73,dragged:false}
 let cannon={w:100,h:30,angle:Math.PI/4,fire:false,rateOfFire:100}
-let dir={left:false,right:false,up:false,down:false}
+let dir={left:false,right:false,up:false,down:false,mouse:false}
 let prevTime=Date.now()
 let score=0;
 let highscore=localStorage.getItem('highscore'); 
@@ -17,22 +15,22 @@ if(highscore===null){
     highscore=0
 }
 canvas.addEventListener("mousedown",(e)=>{
-    mouseDown=true;
+    dir.mouse=true;
     let path = new Path2D();
     path.rect(tank.x,tank.y,tank.w,tank.h)
-    if ((ctx.isPointInPath(path, e.offsetX, e.offsetY))&&!tankDragged){
-    tankDragged=true
+    if ((ctx.isPointInPath(path, e.offsetX, e.offsetY))&&!tank.dragged){
+    tank.dragged=true
     }
 })
 canvas.addEventListener("mouseup",()=>{
-    mouseDown=false;
-    tankDragged=false
+    dir.mouse=false;
+    tank.dragged=false
 })
 
 canvas.addEventListener("mousemove",(e)=>{
-if (tankDragged){
+if (tank.dragged){
     tank.x=e.offsetX-tank.w/2;
-}else if(mouseDown){
+}else if(dir.mouse){
     cannon.angle=Math.atan2(tank.y-tank.h/2 - e.offsetY, (-(tank.x+tank.w/2 - e.offsetX)))
     if(cannon.angle>=Math.PI||(cannon.angle<0.1&&cannon.angle<-1)){
         cannon.angle=Math.PI-0.1
@@ -51,7 +49,7 @@ document.addEventListener("keyup",(key)=>{
  })
 
 function keyCheck(key,mode){
-    if(!tankDragged){
+    if(!tank.dragged){
         if(key.key=="a"){
             dir.left=mode
         }
