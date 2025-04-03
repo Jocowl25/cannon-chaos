@@ -9,8 +9,6 @@ let floor=height-25;
 let mouseDown=false;
 let tank={w:60,h:70,x:width/2,y:floor-73}
 let cannon={w:100,h:30,angle:Math.PI/4,fire:false,rateOfFire:100}
-let ballList=[]
-let enemyList=[]
 let dir={left:false,right:false,up:false,down:false}
 let prevTime=Date.now()
 let score=0;
@@ -84,10 +82,10 @@ requestAnimationFrame(draw)
 function draw(){
     setStatic()
     enemySpawn()
-    ballList.forEach((ball,i)=>drawBall(ball,i))
+    ball.collection.forEach((bal,i)=>drawBall(bal,i))
     tankMovement()
     drawTank()
-    enemyList.forEach((enemy,i)=>drawEnemy(enemy,i))
+    enemy.collection.forEach((enem,i)=>drawEnemy(enem,i))
     drawScore(score,48,50)
     drawScore(highscore,32,80)
     requestAnimationFrame(draw)
@@ -125,7 +123,7 @@ function setStatic(){
         }else{
             angle=-2.35619
         }
-            enemyList.push(new enemy(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0))
+            enemy.collection.push(new enemy(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0))
             enemy.count++
         }
     }
@@ -150,13 +148,14 @@ function tankMovement(){
     }
     if(cannon.fire&&Date.now()-prevTime>cannon.rateOfFire){
         prevTime=Date.now()
-        ballList.push(new ball(ball.colorIndex))
+        ball.collection.push(new ball(ball.colorIndex))
         ball.colorIndex++
         ball.colorIndex=ball.colorIndex%5
     }
 }
 class ball {
     static colorIndex=0
+    static collection=[]
         constructor(i){
             this.color=60*i
         }
@@ -190,6 +189,7 @@ class ball {
 
   class enemy{
     static count=0
+    static collection=[]
     constructor(size,angle,xStart,yStart){
         this.size=size
         this.angle=angle
@@ -222,15 +222,15 @@ class ball {
   }
 }
 
-function drawBall(ball,i){
+function drawBall(ballObj,i){
     ctx.beginPath();
-    ctx.fillStyle=`oklch(100% 0.9 ${ball.color}deg)`
-    if(!ball.finish){
-        ball.physics()
+    ctx.fillStyle=`oklch(100% 0.9 ${ballObj.color}deg)`
+    if(!ballObj.finish){
+        ballObj.physics()
     }else{
-        ballList.splice(i,1)
+        ball.collection.splice(i,1)
     }
-    ctx.arc(ball.x,ball.y,10,0,2*Math.PI)
+    ctx.arc(ballObj.x,ballObj.y,10,0,2*Math.PI)
     ctx.fill()
     ctx.stroke()
 }
@@ -254,8 +254,8 @@ function drawTank(){
     pathTank.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
     ctx.stroke()
-enemyList.forEach((enemy)=>{
-    checkPath(pathTank,enemy)
+enemy.collection.forEach((enem)=>{
+    checkPath(pathTank,enem)
 })
     //wheels
     ctx.beginPath();
@@ -281,8 +281,8 @@ function checkPath(path,enem){
     ctx.isPointInPath(path,enem.x,enem.y+enem.size)||
     ctx.isPointInPath(path,enem.x,enem.y-enem.size)){
         score=0
-       enemyList=[]
-       ballList=[]
+       enemy.collection=[]
+       ball.collection=[]
        enemy.count=0
         tank.x=width/2
         return;
@@ -296,18 +296,18 @@ function drawEnemy(enem,i){
     ctx.beginPath();
     ctx.arc(enem.x,enem.y,enem.size,0,2*Math.PI)
     enem.physics(i)
-    ballList.forEach((ball,j)=>{
+    ball.collection.forEach((ball,j)=>{
         if(ctx.isPointInPath(ball.x,ball.y)&&!findHit){
             findHit=true
             if(enem.size>15){
-                enemyList.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
-                enemyList.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
+                enemy.collection.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
+                enemy.collection.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
             }
             if(enem.size==60){
                 enemy.count--
             }
-            enemyList.splice(i,1)
-            ballList.splice(j,1)
+            enemy.collection.splice(i,1)
+            ball.collection.splice(j,1)
             score++
             if(score>highscore){
                 highscore=score
