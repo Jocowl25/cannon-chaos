@@ -296,8 +296,8 @@ function drawEnemy(enem,i){
     ctx.beginPath();
     ctx.arc(enem.x,enem.y,enem.size,0,2*Math.PI)
     enem.physics(i)
-    ball.collection.forEach((ball,j)=>{
-        if(ctx.isPointInPath(ball.x,ball.y)&&!findHit){
+    ball.collection.forEach((ballObj,j)=>{
+        if(ctx.isPointInPath(ballObj.x,ballObj.y)&&!findHit){
             findHit=true
             if(enem.size>15){
                 enemy.collection.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
