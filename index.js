@@ -89,25 +89,19 @@ function draw(){
     tankMovement()
     drawTank()
     enemyList.forEach((enemy,i)=>drawEnemy(enemy,i))
-    drawScore()
+    drawScore(score,48,50)
+    drawScore(highscore,32,80)
     requestAnimationFrame(draw)
 }
 
-function drawScore(){
-    ctx.font = "48px sans-serif";
+function drawScore(score,size,y){
+    ctx.font = `${size}px sans-serif`;
     let string=score.toString()
     let stringLength=string.length
     for(i=0;i<7-stringLength;i++){
         string="0"+string
     }
-    ctx.fillText(string, width/2-(ctx.measureText(string).width/2), 50);
-    ctx.font = "32px sans-serif";
-     string=highscore.toString()
-     stringLength=string.length
-    for(i=0;i<7-stringLength;i++){
-        string="0"+string
-    }
-    ctx.fillText(string, width/2-(ctx.measureText(string).width/2), 80);
+    ctx.fillText(string, width/2-(ctx.measureText(string).width/2), y);
 }
 
 function setStatic(){
