@@ -251,18 +251,9 @@ function drawTank(){
     pathTank.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
     ctx.stroke()
-
 enemyList.forEach((enemy)=>{
-    let inPath=ctx.isPointInPath(pathTank,enemy.x,enemy.y)
-    if(inPath){
-        score=0
-       enemyList=[]
-       bigcount=0
-        tank.x=width/2
-        return;
-    }
+    checkPath(pathTank,enemy)
 })
-
     //wheels
     ctx.beginPath();
     ctx.fillStyle="black"
@@ -276,6 +267,23 @@ enemyList.forEach((enemy)=>{
     ctx.roundRect(tank.x+5,tank.y+25,50,10,[40])
     ctx.fill()
     ctx.stroke()
+}
+
+function checkPath(path,enemy){
+    if(enemy.y+enemy.size>tank.h+cannon.h){
+    if(
+    ctx.isPointInPath(path,enemy.x,enemy.y)||
+    ctx.isPointInPath(path,enemy.x+enemy.size,enemy.y)||
+    ctx.isPointInPath(path,enemy.x-enemy.size,enemy.y)||
+    ctx.isPointInPath(path,enemy.x,enemy.y+enemy.size)||
+    ctx.isPointInPath(path,enemy.x,enemy.y-enemy.size)){
+        score=0
+       enemyList=[]
+       bigcount=0
+        tank.x=width/2
+        return;
+    }
+}
 }
 
 function drawEnemy(enem,i){    
