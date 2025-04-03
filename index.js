@@ -96,10 +96,18 @@ function draw(){
     tankMovement()
     drawTank()
     enemyList.forEach((enemy,i)=>drawEnemy(enemy,i))
-    ctx.font = "48px serif";
-    let string=score
-    ctx.fillText(score, width/2-(ctx.measureText(string).width/2), 50);
+    drawScore()
     requestAnimationFrame(draw)
+}
+
+function drawScore(){
+    ctx.font = "48px sans-serif";
+    let string=score.toString()
+    let stringLength=string.length
+    for(i=0;i<7-stringLength;i++){
+        string="0"+string
+    }
+    ctx.fillText(string, width/2-(ctx.measureText(string).width/2), 50);
 }
 
 function setStatic(){
