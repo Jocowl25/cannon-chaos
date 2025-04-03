@@ -15,6 +15,10 @@ let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
 let prevTime=Date.now()
 let score=0;
+let highscore=localStorage.getItem('highscore'); 
+if(highscore===null){
+    highscore=0
+}
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -42,43 +46,32 @@ if (tankDragged){
 }
 })
 document.addEventListener("keydown",(key)=>{
-    if(!tankDragged){
-        if(key.key=="a"||key.key=="ArrowLeft"){
-            dir.left=true
-        }
-        if(key.key=="d"||key.key=="ArrowRight"){
-            dir.right=true
-        }
-    }
-        if(key.key=="w"||key.key=="ArrowUp"){
-            dir.up=true
-        }
-        if(key.key=="s"||key.key=="ArrowDown"){
-            dir.down=true;
-        }
-        if(key.key==" "){
-            cannon.fire=true;
-        }
+   keyCheck(key,true)
 })
 
 document.addEventListener("keyup",(key)=>{
-    if(key.key=="a"||key.key=="ArrowLeft"){
-        dir.left=false
-    }
-    if(key.key=="d"||key.key=="ArrowRight"){
-        dir.right=false
-    }
-    if(key.key=="w"||key.key=="ArrowUp"){
-        dir.up=false
-    }
-    if(key.key=="s"||key.key=="ArrowDown"){
-        dir.down=false;
-    }
-    if(key.key==" "){
-        cannon.fire=false;
-    }
+    keyCheck(key,false)
  })
 
+function keyCheck(key,mode){
+    if(!tankDragged){
+        if(key.key=="a"){
+            dir.left=mode
+        }
+        if(key.key=="d"){
+            dir.right=mode
+        }
+    }
+        if(key.key=="ArrowLeft"){
+            dir.up=mode
+        }
+        if(key.key=="ArrowRight"){
+            dir.down=mode;
+        }
+        if(key.key==" "||key.key=="ArrowDown"||key.key=="ArrowUp"){
+            cannon.fire=mode;
+        }
+}
 window.addEventListener("resize", () => {
     canvas.width=window.innerWidth;
     canvas.height=window.innerHeight;
@@ -108,6 +101,13 @@ function drawScore(){
         string="0"+string
     }
     ctx.fillText(string, width/2-(ctx.measureText(string).width/2), 50);
+    ctx.font = "32px sans-serif";
+     string=highscore.toString()
+     stringLength=string.length
+    for(i=0;i<7-stringLength;i++){
+        string="0"+string
+    }
+    ctx.fillText(string, width/2-(ctx.measureText(string).width/2), 80);
 }
 
 function setStatic(){
@@ -314,6 +314,10 @@ function drawEnemy(enem,i){
             }
             enemyList.splice(i,1)
             score++
+            if(score>highscore){
+                highscore=score
+                localStorage.setItem('highscore',highscore.toString()); 
+            }
             return;
         }
     })
