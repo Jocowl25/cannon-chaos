@@ -15,7 +15,6 @@ let dir={left:false,right:false,up:false,down:false}
 let colorIndex=0
 let prevTime=Date.now()
 let score=0;
-let bigcount=0
 canvas.addEventListener("mousedown",(e)=>{
     mouseDown=true;
     let path = new Path2D();
@@ -117,7 +116,7 @@ function setStatic(){
     }
     
     function enemySpawn(){
-        if(bigcount<10){
+        if(enemy.count<10){
             let angle
             if(Math.random()<0.5){
                 angle=-Math.PI/4
@@ -125,7 +124,7 @@ function setStatic(){
             angle=-2.35619
         }
             enemyList.push(new enemy(50,angle,Math.floor(Math.random() * ((width-50) - (50) + 1) + (50)),0))
-            bigcount++
+            enemy.count++
         }
     }
 function tankMovement(){
@@ -187,6 +186,7 @@ class ball {
   }
 
   class enemy{
+    static count=0
     constructor(size,angle,xStart,yStart){
         this.size=size
         this.angle=angle
@@ -269,18 +269,18 @@ enemyList.forEach((enemy)=>{
     ctx.stroke()
 }
 
-function checkPath(path,enemy){
-    if(enemy.y+enemy.size>tank.h+cannon.h){
+function checkPath(path,enem){
+    if(enem.y+enem.size>tank.h+cannon.h){
     if(
-    ctx.isPointInPath(path,enemy.x,enemy.y)||
-    ctx.isPointInPath(path,enemy.x+enemy.size,enemy.y)||
-    ctx.isPointInPath(path,enemy.x-enemy.size,enemy.y)||
-    ctx.isPointInPath(path,enemy.x,enemy.y+enemy.size)||
-    ctx.isPointInPath(path,enemy.x,enemy.y-enemy.size)){
+    ctx.isPointInPath(path,enem.x,enem.y)||
+    ctx.isPointInPath(path,enem.x+enem.size,enem.y)||
+    ctx.isPointInPath(path,enem.x-enem.size,enem.y)||
+    ctx.isPointInPath(path,enem.x,enem.y+enem.size)||
+    ctx.isPointInPath(path,enem.x,enem.y-enem.size)){
         score=0
        enemyList=[]
        ballList=[]
-       bigcount=0
+       enemy.count=0
         tank.x=width/2
         return;
     }
@@ -297,7 +297,7 @@ function drawEnemy(enem,i){
             enemyList.splice(i,1)
             score++
             if(enem.size==50){
-                bigcount--
+                enemy.count--
             }
 
             if(enem.size>12.5){
