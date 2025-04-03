@@ -8,7 +8,7 @@ let tankDragged=false;
 let floor=height-25;
 let mouseDown=false;
 let tank={w:60,h:70,x:width/2,y:floor-73}
-let cannon={w:100,h:30,angle:Math.PI/4,fire:false}
+let cannon={w:100,h:30,angle:Math.PI/4,fire:false,rateOfFire:100}
 let ballList=[]
 let enemyList=[]
 let dir={left:false,right:false,up:false,down:false}
@@ -116,14 +116,14 @@ function setStatic(){
     }
     
     function enemySpawn(){
-        if(enemy.count<10){
+        if(enemy.count<5){
             let angle
             if(Math.random()<0.5){
                 angle=-Math.PI/4
         }else{
             angle=-2.35619
         }
-            enemyList.push(new enemy(50,angle,Math.floor(Math.random() * ((width-50) - (50) + 1) + (50)),0))
+            enemyList.push(new enemy(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0))
             enemy.count++
         }
     }
@@ -134,8 +134,8 @@ function tankMovement(){
     if(dir.left){
         tank.x-=10
     }
-    if(tank.x>width-tank.w-(cannon.w-24)*Math.cos(cannon.angle)){
-        tank.x=width-tank.w-(cannon.w-24)*Math.cos(cannon.angle);
+    if(tank.x>width-tank.w){
+        tank.x=width-tank.w;
     }
     if(tank.x<0){
         tank.x=0;
@@ -146,7 +146,7 @@ function tankMovement(){
     if(dir.down&&cannon.angle>0.1){
         cannon.angle-=0.1
     }
-    if(cannon.fire&&Date.now()-prevTime>200){
+    if(cannon.fire&&Date.now()-prevTime>cannon.rateOfFire){
         prevTime=Date.now()
         ballList.push(new ball(colorIndex))
         colorIndex++
@@ -296,11 +296,11 @@ function drawEnemy(enem,i){
         if(ctx.isPointInPath(ball.x,ball.y)){
             enemyList.splice(i,1)
             score++
-            if(enem.size==50){
+            if(enem.size==60){
                 enemy.count--
             }
 
-            if(enem.size>12.5){
+            if(enem.size>15){
                 enemyList.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
                 enemyList.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
                 return;
