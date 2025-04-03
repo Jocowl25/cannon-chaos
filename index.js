@@ -200,7 +200,7 @@ class ball {
     }
     bounce=1
     finish=false
-    physics(i){
+    physics(){
         this.x+=this.vel.x
         this.vel.y+=this.vi/height*20 //GRAVITY
         this.y+=this.vel.y
