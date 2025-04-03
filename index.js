@@ -101,6 +101,7 @@ function draw(){
     ctx.fillText(score, width/2-(ctx.measureText(string).width/2), 50);
     requestAnimationFrame(draw)
 }
+
 function setStatic(){
     //sky
     ctx.fillStyle="#130d36"
@@ -288,23 +289,24 @@ function checkPath(path,enem){
 }
 
 function drawEnemy(enem,i){    
+    let findHit=false
     ctx.fillStyle="white"
     ctx.beginPath();
     ctx.arc(enem.x,enem.y,enem.size,0,2*Math.PI)
     enem.physics(i)
     ballList.forEach((ball)=>{
-        if(ctx.isPointInPath(ball.x,ball.y)){
-            enemyList.splice(i,1)
-            score++
-            if(enem.size==60){
-                enemy.count--
-            }
-
+        if(ctx.isPointInPath(ball.x,ball.y)&&!findHit){
+            findHit=true
             if(enem.size>15){
                 enemyList.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
                 enemyList.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
-                return;
             }
+            if(enem.size==60){
+                enemy.count--
+            }
+            enemyList.splice(i,1)
+            score++
+            return;
         }
     })
     ctx.fill()
