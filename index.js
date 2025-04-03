@@ -296,8 +296,11 @@ function drawEnemy(enem,i){
         if(ctx.isPointInPath(ball.x,ball.y)){
             enemyList.splice(i,1)
             score++
-            if(enem.size>25){
+            if(enem.size==50){
                 bigcount--
+            }
+
+            if(enem.size>12.5){
                 enemyList.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
                 enemyList.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
                 return;
