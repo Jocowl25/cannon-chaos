@@ -12,7 +12,6 @@ let cannon={w:100,h:30,angle:Math.PI/4,fire:false,rateOfFire:100}
 let ballList=[]
 let enemyList=[]
 let dir={left:false,right:false,up:false,down:false}
-let colorIndex=0
 let prevTime=Date.now()
 let score=0;
 let highscore=localStorage.getItem('highscore'); 
@@ -151,12 +150,13 @@ function tankMovement(){
     }
     if(cannon.fire&&Date.now()-prevTime>cannon.rateOfFire){
         prevTime=Date.now()
-        ballList.push(new ball(colorIndex))
-        colorIndex++
-        colorIndex=colorIndex%5
+        ballList.push(new ball(ball.colorIndex))
+        ball.colorIndex++
+        ball.colorIndex=ball.colorIndex%5
     }
 }
 class ball {
+    static colorIndex=0
         constructor(i){
             this.color=60*i
         }
@@ -264,7 +264,7 @@ enemyList.forEach((enemy)=>{
     ctx.arc(tank.x+50,tank.y+70,10,0,2*Math.PI)
     ctx.fill()
     //rect on front
-    ctx.fillStyle=`oklch(100% 0.9 ${60*colorIndex}deg)`
+    ctx.fillStyle=`oklch(100% 0.9 ${60*ball.colorIndex}deg)`
     ctx.lineWidth=2
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+25,50,10,[40])
