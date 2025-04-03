@@ -78,7 +78,7 @@ window.addEventListener("resize", () => {
     width=canvas.width;
     height=canvas.height;
     floor=height-25;
-    tank.y=floor-53
+    tank.y=floor-73
 });
 requestAnimationFrame(draw)
 
