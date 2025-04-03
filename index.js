@@ -10,10 +10,7 @@ let cannon={w:100,h:30,angle:Math.PI/4,fire:false,rateOfFire:100}
 let dir={left:false,right:false,up:false,down:false,mouse:false}
 let prevTime=Date.now()
 let score=0;
-let highscore=localStorage.getItem('highscore'); 
-if(highscore===null){
-    highscore=0
-}
+let highscore=localStorage.getItem('highscore') || 0
 canvas.addEventListener("mousedown",(e)=>{
     dir.mouse=true;
     let path = new Path2D();
