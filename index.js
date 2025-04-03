@@ -80,10 +80,10 @@ requestAnimationFrame(draw)
 function draw(){
     setStatic()
     enemySpawn()
-    ball.collection.forEach((bal,i)=>drawBall(bal,i))
+    balls.collection.forEach((bal,i)=>drawBall(bal,i))
     tankMovement()
     drawTank()
-    enemy.collection.forEach((enem,i)=>drawEnemy(enem,i))
+    enemies.collection.forEach((enemy,i)=>drawEnemy(enemy,i))
     drawScore(score,48,50)
     drawScore(highscore,32,80)
     requestAnimationFrame(draw)
@@ -114,15 +114,15 @@ function setStatic(){
     }
     
     function enemySpawn(){
-        if(enemy.count<5){
+        if(enemies.count<5){
             let angle
             if(Math.random()<0.5){
                 angle=-Math.PI/4
         }else{
             angle=-2.35619
         }
-            enemy.collection.push(new enemy(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0))
-            enemy.count++
+            enemies.collection.push(new enemies(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0))
+            enemies.count++
         }
     }
 function tankMovement(){
@@ -146,12 +146,12 @@ function tankMovement(){
     }
     if(cannon.fire&&Date.now()-prevTime>cannon.rateOfFire){
         prevTime=Date.now()
-        ball.collection.push(new ball(ball.colorIndex))
-        ball.colorIndex++
-        ball.colorIndex=ball.colorIndex%5
+        balls.collection.push(new balls(balls.colorIndex))
+        balls.colorIndex++
+        balls.colorIndex=balls.colorIndex%5
     }
 }
-class ball {
+class balls {
     static colorIndex=0
     static collection=[]
         constructor(i){
@@ -185,7 +185,7 @@ class ball {
     }
   }
 
-  class enemy{
+  class enemies{
     static count=0
     static collection=[]
     constructor(size,angle,xStart,yStart){
@@ -220,15 +220,15 @@ class ball {
   }
 }
 
-function drawBall(ballObj,i){
+function drawBall(ball,i){
     ctx.beginPath();
-    ctx.fillStyle=`oklch(100% 0.9 ${ballObj.color}deg)`
-    if(!ballObj.finish){
-        ballObj.physics()
+    ctx.fillStyle=`oklch(100% 0.9 ${ball.color}deg)`
+    if(!ball.finish){
+        ball.physics()
     }else{
-        ball.collection.splice(i,1)
+        balls.collection.splice(i,1)
     }
-    ctx.arc(ballObj.x,ballObj.y,10,0,2*Math.PI)
+    ctx.arc(ball.x,ball.y,10,0,2*Math.PI)
     ctx.fill()
     ctx.stroke()
 }
@@ -252,8 +252,8 @@ function drawTank(){
     pathTank.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
     ctx.stroke()
-enemy.collection.forEach((enem)=>{
-    checkPath(pathTank,enem)
+enemies.collection.forEach((enemy)=>{
+    checkPath(pathTank,enemy)
 })
     //wheels
     ctx.beginPath();
@@ -262,7 +262,7 @@ enemy.collection.forEach((enem)=>{
     ctx.arc(tank.x+50,tank.y+70,10,0,2*Math.PI)
     ctx.fill()
     //rect on front
-    ctx.fillStyle=`oklch(100% 0.9 ${60*ball.colorIndex}deg)`
+    ctx.fillStyle=`oklch(100% 0.9 ${60*balls.colorIndex}deg)`
     ctx.lineWidth=2
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+25,50,10,[40])
@@ -270,42 +270,42 @@ enemy.collection.forEach((enem)=>{
     ctx.stroke()
 }
 
-function checkPath(path,enem){
-    if(enem.y+enem.size>tank.h+cannon.h){
+function checkPath(path,enemy){
+    if(enemy.y+enemy.size>tank.h+cannon.h){
     if(
-    ctx.isPointInPath(path,enem.x,enem.y)||
-    ctx.isPointInPath(path,enem.x+enem.size,enem.y)||
-    ctx.isPointInPath(path,enem.x-enem.size,enem.y)||
-    ctx.isPointInPath(path,enem.x,enem.y+enem.size)||
-    ctx.isPointInPath(path,enem.x,enem.y-enem.size)){
+    ctx.isPointInPath(path,enemy.x,enemy.y)||
+    ctx.isPointInPath(path,enemy.x+enemy.size,enemy.y)||
+    ctx.isPointInPath(path,enemy.x-enemy.size,enemy.y)||
+    ctx.isPointInPath(path,enemy.x,enemy.y+enemy.size)||
+    ctx.isPointInPath(path,enemy.x,enemy.y-enemy.size)){
         score=0
-       enemy.collection=[]
-       ball.collection=[]
-       enemy.count=0
+       enemies.collection=[]
+       balls.collection=[]
+       enemies.count=0
         tank.x=width/2
         return;
     }
 }
 }
 
-function drawEnemy(enem,i){    
+function drawEnemy(enemy,i){    
     let findHit=false
     ctx.fillStyle="white"
     ctx.beginPath();
-    ctx.arc(enem.x,enem.y,enem.size,0,2*Math.PI)
-    enem.physics(i)
-    ball.collection.forEach((ballObj,j)=>{
-        if(ctx.isPointInPath(ballObj.x,ballObj.y)&&!findHit){
+    ctx.arc(enemy.x,enemy.y,enemy.size,0,2*Math.PI)
+    enemy.physics(i)
+    balls.collection.forEach((ball,j)=>{
+        if(ctx.isPointInPath(ball.x,ball.y)&&!findHit){
             findHit=true
-            if(enem.size>15){
-                enemy.collection.push(new enemy(enem.size/2,2.35619,enem.x+25,enem.y))
-                enemy.collection.push(new enemy(enem.size/2,Math.PI/4,enem.x-25,enem.y))
+            if(enemy.size>15){
+                enemies.collection.push(new enemies(enemy.size/2,2.35619,enemy.x+25,enemy.y))
+                enemies.collection.push(new enemies(enemy.size/2,Math.PI/4,enemy.x-25,enemy.y))
             }
-            if(enem.size==60){
-                enemy.count--
+            if(enemy.size==60){
+                enemies.count--
             }
-            enemy.collection.splice(i,1)
-            ball.collection.splice(j,1)
+            enemies.collection.splice(i,1)
+            balls.collection.splice(j,1)
             score++
             if(score>highscore){
                 highscore=score
