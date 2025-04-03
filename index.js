@@ -62,10 +62,10 @@ function keyCheck(key,mode){
             dir.right=mode
         }
     }
-        if(key.key=="ArrowLeft"){
+        if(key.key=="ArrowLeft"||key.key=="w"){
             dir.up=mode
         }
-        if(key.key=="ArrowRight"){
+        if(key.key=="ArrowRight"||key.key=="s"){
             dir.down=mode;
         }
         if(key.key==" "||key.key=="ArrowDown"||key.key=="ArrowUp"){
@@ -296,7 +296,7 @@ function drawEnemy(enem,i){
     ctx.beginPath();
     ctx.arc(enem.x,enem.y,enem.size,0,2*Math.PI)
     enem.physics(i)
-    ballList.forEach((ball)=>{
+    ballList.forEach((ball,j)=>{
         if(ctx.isPointInPath(ball.x,ball.y)&&!findHit){
             findHit=true
             if(enem.size>15){
@@ -307,6 +307,7 @@ function drawEnemy(enem,i){
                 enemy.count--
             }
             enemyList.splice(i,1)
+            ballList.splice(j,1)
             score++
             if(score>highscore){
                 highscore=score
