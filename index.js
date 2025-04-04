@@ -63,6 +63,10 @@ function keyCheck(key,mode){
         if(key.key==" "||key.key=="ArrowDown"||key.key=="ArrowUp"){
             cannon.fire=mode;
         }
+        if(key.key=="R"){
+            highscore=0
+            localStorage.setItem("highscore",0)
+        }
 }
 window.addEventListener("resize", () => {
     canvas.width=window.innerWidth;
@@ -88,6 +92,7 @@ function draw(){
 
 function drawScore(score,size,y){
     ctx.font = `${size}px sans-serif`;
+    ctx.fillStyle="white"
     let string=score.toString()
     let stringLength=string.length
     for(i=0;i<7-stringLength;i++){
