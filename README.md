@@ -3,6 +3,6 @@ A small arcade style cannon game.
 
 Controls:
 - A & D to move.
-- W & S or LEFT & RIGHT ARROW keys to rotate the cannon.
-- SPACE or UP ARROW to fire.
-- SHIFT+R to reset the high score.
+- W & S or Left & Right Arrow keys to rotate the cannon.
+- Space or Up Arrow to fire.
+- Shift+R to reset the high score.
