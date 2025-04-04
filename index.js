@@ -232,6 +232,7 @@ function drawBall(ball,i){
 
 function drawTank(){
     //cannon
+    let pathTank=new Path2D()
     ctx.fillStyle="#b8b8b8"
     ctx.translate(tank.x+tank.w/2,tank.y+tank.h/2-tank.h/4+4)
     ctx.rotate(-cannon.angle);
@@ -242,16 +243,11 @@ function drawTank(){
     ctx.translate(-tank.x+tank.w/2, -tank.y+tank.h/2-tank.h/4+4)
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     //body
-    let pathTank=new Path2D()
     ctx.fillStyle="#b8b8b8"
     ctx.beginPath();
     ctx.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
-    pathTank.roundRect(tank.x,tank.y,tank.w,tank.h,[10])
     ctx.fill()
     ctx.stroke()
-enemies.collection.forEach((enemy)=>{
-    checkPath(pathTank,enemy)
-})
     //wheels
     ctx.beginPath();
     ctx.fillStyle="black"
@@ -263,8 +259,12 @@ enemies.collection.forEach((enemy)=>{
     ctx.lineWidth=2
     ctx.beginPath();
     ctx.roundRect(tank.x+5,tank.y+25,50,10,[40])
+    pathTank.roundRect(tank.x+5,tank.y+25,50,10,[40])
     ctx.fill()
     ctx.stroke()
+    enemies.collection.forEach((enemy)=>{
+        checkPath(pathTank,enemy)
+    })
 }
 
 function checkPath(path,enemy){
