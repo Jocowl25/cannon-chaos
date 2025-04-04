@@ -274,7 +274,12 @@ function checkPath(path,enemy){
     ctx.isPointInPath(path,enemy.x+enemy.size,enemy.y)||
     ctx.isPointInPath(path,enemy.x-enemy.size,enemy.y)||
     ctx.isPointInPath(path,enemy.x,enemy.y+enemy.size)||
-    ctx.isPointInPath(path,enemy.x,enemy.y-enemy.size)){
+    ctx.isPointInPath(path,enemy.x,enemy.y-enemy.size)||
+    ctx.isPointInPath(path,enemy.x+enemy.size,enemy.y+enemy.size)||
+    ctx.isPointInPath(path,enemy.x-enemy.size,enemy.y+enemy.size)||
+    ctx.isPointInPath(path,enemy.x+enemy.size,enemy.y-enemy.size)||
+    ctx.isPointInPath(path,enemy.x-enemy.size,enemy.y-enemy.size)
+){
         score=0
        enemies.collection=[]
        balls.collection=[]
