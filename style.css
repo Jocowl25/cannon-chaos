@@ -18,7 +18,7 @@ html, body{
     justify-content: center;
     align-items: center;
     color:white;
-    font-size:100px;
+    font-size:80px;
     background-color:rgba(28, 28, 28, 0.817)
 }
 @media only screen and (max-device-width: 480px){
