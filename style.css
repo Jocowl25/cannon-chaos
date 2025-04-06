@@ -11,6 +11,7 @@ html, body{
 .nophone{
     position:absolute;
     display: none;
+    top:0;
     width:100vw;
     height:100vh;
     z-index: 50;
@@ -18,7 +19,7 @@ html, body{
     justify-content: center;
     align-items: center;
     color:white;
-    font-size:80px;
+    font-size:60px;
     background-color:rgba(28, 28, 28, 0.817)
 }
 @media only screen and (max-device-width: 480px){
