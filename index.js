@@ -310,10 +310,12 @@ function drawEnemy(enemy,i){
             }
             if(enemy.size==60){
                 enemies.count--
+                score+=5
+            }else{
+                score+=enemy.size/15
             }
             enemies.collection.splice(i,1)
             balls.collection.splice(j,1)
-            score++
             if(score>highscore){
                 highscore=score
                 localStorage.setItem('highscore',highscore.toString()); 
