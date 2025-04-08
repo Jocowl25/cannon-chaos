@@ -95,7 +95,7 @@ function drawScore(score,size,y){
     ctx.fillStyle="white"
     let string=score.toString()
     let stringLength=string.length
-    for(i=0;i<7-stringLength;i++){
+    for(i=0;i<5-stringLength;i++){
         string="0"+string
     }
     ctx.fillText(string, width/2-(ctx.measureText(string).width/2), y);
