@@ -45,23 +45,23 @@ document.addEventListener("keyup",(key)=>{
     keyCheck(key,false)
  })
 
-function keyCheck(key,mode){
+function keyCheck(key,pressed){
     if(!tank.dragged){
         if(key.key=="a"){
-            dir.left=mode
+            dir.left=pressed
         }
         if(key.key=="d"){
-            dir.right=mode
+            dir.right=pressed
         }
     }
         if(key.key=="ArrowLeft"||key.key=="w"){
-            dir.up=mode
+            dir.up=pressed
         }
         if(key.key=="ArrowRight"||key.key=="s"){
-            dir.down=mode;
+            dir.down=pressed;
         }
         if(key.key==" "||key.key=="ArrowDown"||key.key=="ArrowUp"){
-            cannon.fire=mode;
+            cannon.fire=pressed;
         }
         if(key.key=="R"){
             highscore=0
