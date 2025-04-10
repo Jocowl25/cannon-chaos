@@ -123,7 +123,7 @@ function setStatic(){
         }else{
             angle=-2.35619
         }
-            enemies.collection.push(new enemies(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0))
+            new enemies(60,angle,Math.floor(Math.random() * ((width-60) - (60) + 1) + (60)),0)
             enemies.count++
         }
     }
@@ -148,7 +148,7 @@ function tankMovement(){
     }
     if(cannon.fire&&Date.now()-prevTime>cannon.rateOfFire){
         prevTime=Date.now()
-        balls.collection.push(new balls(balls.colorIndex))
+        new balls(balls.colorIndex)
         balls.colorIndex++
         balls.colorIndex=balls.colorIndex%5
     }
@@ -157,6 +157,7 @@ class balls {
     static colorIndex=0
     static collection=[]
         constructor(i){
+            balls.collection.push(this)
             this.color=60*i
         }
         angle=cannon.angle
@@ -191,6 +192,7 @@ class balls {
     static count=0
     static collection=[]
     constructor(size,angle,xStart,yStart){
+        enemies.collection.push(this)
         this.size=size
         this.angle=angle
         this.vi=5 //INITIAL VELOCITY
@@ -305,8 +307,8 @@ function drawEnemy(enemy,i){
         if(ctx.isPointInPath(ball.x,ball.y)&&!findHit){
             findHit=true
             if(enemy.size>15){
-                enemies.collection.push(new enemies(enemy.size/2,2.35619,enemy.x+25,enemy.y))
-                enemies.collection.push(new enemies(enemy.size/2,Math.PI/4,enemy.x-25,enemy.y))
+                new enemies(enemy.size/2,2.35619,enemy.x+25,enemy.y)
+                new enemies(enemy.size/2,Math.PI/4,enemy.x-25,enemy.y)
             }
             if(enemy.size==60){
                 enemies.count--
